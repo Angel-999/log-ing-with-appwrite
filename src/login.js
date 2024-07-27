@@ -9,7 +9,6 @@ function LogInFunc() {
     const passwordInput = document.getElementById("password-input").value;
     login(emailInput, passwordInput)
     .then((account) => {
-        window.alert("Logged in as " + account.current);
         window.location = "./truck.html";
     })
     .catch((error) => {
