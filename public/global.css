@@ -3,7 +3,7 @@
     --clr-primary: #00e069;
     --clr-yellow: #ffbb00;
     --clr-red: #ff3c00;
-    --clr-background: light-dark(#ffffff, #0f0f0f);
+    --clr-background: light-dark(#ffffff, #ff0000);
     --clr-foreground: light-dark(#F3F3F3, #242424);
     --clr-foreground-accent: light-dark(#dddddd, #303030);
     --clr-foreground-light: light-dark(#cfcfcf, #444444);
