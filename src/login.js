@@ -10,7 +10,7 @@ function LogInFunc() {
     login(emailInput, passwordInput)
     .then((account) => {
         window.alert("Logged in as " + account.current);
-        window.location = "/public";
+        window.location = "./truck.html";
     })
     .catch((error) => {
         window.alert("Login failed: " + error.message);
