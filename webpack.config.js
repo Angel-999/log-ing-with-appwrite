@@ -1,8 +1,9 @@
 const path = require('path');
 module.exports = {
   entry: {
-    index: './src/index.js',
+    truck: './src/truck.js',
     login: './src/login.js',
+    translate: './src/translate.js',
     // Add more entries as needed
   },
   output: {

@@ -58,7 +58,7 @@
 }
 
 .page-link-label:hover {
-    color: #000;
+    color: var(--clr-text);
 }
 
 .form-btn {

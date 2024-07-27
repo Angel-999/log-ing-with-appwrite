@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TST Board - Trucks</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="truck.css">
+    <link rel="stylesheet" href="skeleton.css">
+    <script src="https://kit.fontawesome.com/a2b6c08f57.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <dialog add-modal style="padding: 50px; z-index: 6;" class="add-modal">
+        <div id="loadingOverlay" style="display: none;">
+            <span
+                style=" z-index: 5; display: flex; justify-content: center; align-items: center;  position: fixed; width: 100%; height: 100%; font-size: large;">Loading...</span>
+            <div class="spinner">
+                <div class="spinner1"></div>
+            </div>
+        </div>
+        <form class="form" id="addForm-Submit">
+            <p data-translate="modal_title" class="title">Add Truck</p>
+            <label data-translate="truck_number_label" for="TruckNumberInputField">Truck Number</label>
+            <input data-translate="truck_number_label" id="TruckNumberInputField" type="text" class="input"
+                placeholder="Truck Number" autocomplete="off" required></input>
+            <label data-translate="truck_picture_label">Truck Picture</label>
+            <button type="button" class="container-btn-file" id="uploadButton">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span data-translate="upload_button_text">Upload File</span>
+                <input id="fileInput" class="file" name="text" type="file" accept="image/*">
+            </button>
+            <canvas id="canvas" style="display:none;"></canvas>
+
+
+
+
+            <button data-translate="add_button_text" class="form-btn" id="form-add">Add</button>
+
+        </form>
+    </dialog>
+    <style id="themeSelector"></style>
+
+
+    <div class="top-bar">
+        <div class="left-section">
+            <div class="menu-btn">
+                <input type="checkbox" id="checkbox">
+                <label for="checkbox" class="toggle">
+                    <div class="bars" id="bar1"></div>
+                    <div class="bars" id="bar2"></div>
+                    <div class="bars" id="bar3"></div>
+                </label>
+            </div>
+            <div class="logo">TST Board</div>
+        </div>
+        <div class="search-bar">
+            <input data-translate="Search_bar" type="text" placeholder="Search..." id="search-bar">
+            <div class="tooltip" id="search-btn">
+                <div class="icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                <div class="tooltiptext" data-translate="Search_button_text">Buscar</div>
+            </div>
+        </div>
+        <div class="right-section">
+            <div class="tooltip" id="refresh-btn">
+                <div class="icon"><i class="fa-solid fa-arrows-rotate"></i></div>
+                <div class="tooltiptext" data-translate="refresh_button_text">Refresh</div>
+            </div>
+            <div class="tooltip" open-modal>
+                <div class="icon"><i class="fa-solid fa-file-circle-plus"></i></div>
+                <div class="tooltiptext" data-translate="new_truck_button_text">Add Truck</div>
+            </div>
+            <div class="user-profile">
+                <img src="" alt="Profile picture" id="profile-picture" draggable="false" class="skeleton">
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <ul>
+                        <li><img src="" alt="Profile picture" id="profile-picture2" draggable="false" class="skeleton">
+                            <div style="padding-left: 10px;">
+                                <span id="user-name"></span><br>
+                                <span id="user-team">No Role!</span>
+                            </div>
+                        </li>
+                        <li><i class="fa-solid fa-globe"></i>
+                            <span data-translate="language_selector">Language:</span>
+                            <select id="language-select" class="theme-selector">
+                                <option data-translate="language_English" value="en">English</option>
+                                <option data-translate="language_Spanish" value="es">Spanish</option>
+                            </select>
+                        </li>
+                        <li><i class="fa-regular fa-eye"></i>
+                            <span data-translate="theme_selector">Theme:</span>
+                            <select id="theme-select" class="theme-selector">
+                                <option data-translate="theme_system" value="light dark">System Default</option>
+                                <option data-translate="theme_light" value="light">Light Theme</option>
+                                <option data-translate="theme_dark" value="dark">Dark Theme</option>
+                            </select>
+                        </li>
+                        <li id="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i><span
+                                data-translate="log_out">Log out</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <ul>
+                <a href="#" data-role="Administrator,Dispatcher">
+                    <li><i class="fa-solid fa-house-chimney"></i><span data-translate="Home_link"></span></li>
+                </a>
+                <a href="#" data-role="Administrator,Dispatcher">
+                    <li><i class="fa-solid fa-building-user"></i><span data-translate="Clients_link"></span></li>
+                </a>
+                <a href="#" data-role="Administrator,Dispatcher,Driver">
+                    <li><i class="fa-solid fa-boxes-packing"></i><span data-translate="Loads_link"></span></li>
+                </a>
+                <a href="#" data-role="Administrator,Dispatcher">
+                    <li><i class="fa-solid fa-users"></i><span data-translate="Brokers_link"></span></li>
+                </a>
+                <a href="#" data-role="Administrator,Dispatcher">
+                    <li><i class="fa-solid fa-id-card"></i><span data-translate="Drivers_link"></span></li>
+                </a>
+                <a href="#" data-role="Administrator,Dispatcher,Driver">
+                    <li class="active"><i class="fa-solid fa-truck-moving"></i><span
+                            data-translate="Trucks_link"></span></li>
+                </a>
+                <a href="#" data-role="Administrator,Dispatcher,Driver">
+                    <li><i class="fa-solid fa-trailer"></i><span data-translate="Trailers_link"></span></li>
+                </a>
+            </ul>
+        </div>
+        <div class="main-content">
+            <main id="main">
+                <div class="video-grid" id="video-grid">
+                    <template id="card-template">
+                        <a data-link  class="video-card">
+                            <img data-thumbnail loading="lazy" src="" class="video-thumbnail skeleton" draggable="false">
+                            <div class="video-details">
+                                <div>
+                                    <div data-title class="video-title skeleton"  style="--skeletonWidth:35%">Truck Number</div>
+                                    <div data-info data-translate="video_info" class="video-info skeleton"></div>
+                                </div>
+                                <button popovertarget="deletePopover" class="tooltip skeleton" id="delete-open-modal">
+                                    <div class="icon"><i class="fa-solid fa-trash"></i></div>
+                                    <div class="tooltiptext" data-translate="delete_button_text">Delete</div>
+                                </button>
+                                <div popover class="delete-modal" id="deletePopover">
+                                    <div style=" display: flex; flex-direction: column; align-items: center;">
+                                        <label class="title">Delete</label>
+                                        <p  id="message">Are you sure you want to delete this item?</p>
+                                        <div>                                        
+                                            <button id="delete-cancel-modal" popovertarget="deletePopover" popovertargetaction="hide" class="Button" style="--clr: var(--clr-primary);" ><i class="fa-solid fa-door-open"></i><span>No, cancel</span></button>
+                                            <button id="delete-btn" popovertarget="deletePopover" popovertargetaction="hide" class="Button" style="--clr: var(--clr-red);" truck="id"><i class="fa-solid fa-trash"></i>Yes, delete</button>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </a>
+                    </template>    
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.1"></script>
+    <script src="../dist/truck.bundle.js"></script>
+    <script>
+        const openButon = document.querySelector("[open-modal]")
+        const modal = document.querySelector("[add-modal]")
+        openButon.addEventListener("click", () => {
+            modal.showModal()
+        })
+
+        modal.addEventListener("click", e => {
+            const dialogDimensions = modal.getBoundingClientRect()
+            if (
+                e.clientX < dialogDimensions.left ||
+                e.clientX > dialogDimensions.right ||
+                e.clientY < dialogDimensions.top ||
+                e.clientY > dialogDimensions.bottom
+            ) {
+                modal.close()
+            }
+        })
+
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const theme = localStorage.getItem("color-scheme");
+            setInitialColorScheme(theme || "light dark");
+            const profilePicture = document.getElementById("profile-picture");
+            const dropdownMenu = document.getElementById("dropdown-menu");
+            const themeSelect = document.getElementById("theme-select");
+
+            profilePicture.addEventListener("click", function () {
+                dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+            });
+
+            document.addEventListener("click", function (event) {
+                if (!profilePicture.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.style.display = "none";
+                }
+            });
+
+            themeSelect.addEventListener("change", function () {
+                setColorScheme(themeSelect.value);
+            });
+        });
+        function setInitialColorScheme(scheme) {
+            const themeSelect = document.getElementById("theme-select");
+            themeSelect.value = scheme;
+            const styleElement = document.getElementById('themeSelector');
+            styleElement.textContent = `:root { color-scheme: ${scheme}; }`;
+        }
+        function setColorScheme(scheme) {
+            localStorage.setItem("color-scheme", scheme);
+            const styleElement = document.getElementById('themeSelector');
+            styleElement.textContent = `:root { color-scheme: ${scheme}; }`;
+        }
+    </script>
+    <script src="../dist/translate.bundle.js"></script>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-:root{
+:root {
     color-scheme: light dark;
     --clr-primary: #00e069;
     --clr-yellow: #ffbb00;
@@ -12,4 +12,67 @@
     --clr-button-text: light-dark(#000000, var(--clr-primary));
     --clr-button-text-hover: light-dark(#ffffff, #ffffff);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+form {
+    cursor: auto;
+}
+
+.delete-modal {
+    background-color: var(--clr-background);
+    border: 1px solid var(--clr-foreground);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 10px;
+    padding: 20px;
+    pointer-events: none;
+}
+.delete-modal button{
+    pointer-events: auto;
+}
+.delete-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.Button {
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 1px solid var(--clr-foreground);
+    background-color: var(--clr-background);
+    border-radius: 9999px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: transparent;
+    border-radius: 30px;
+    transition: 0.3s;
+    overflow: hidden;
+}
+.Button i{
+    color: var(--clr);
+    margin-right: 10px;
+    transition: 0.3s;
+}
+.Button::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: 0.3s;
+    background-color: var(--clr);
+    border-radius: 30px;
+    visibility: hidden;
+    height: 10px;
+    width: 10px;
+    z-index: -1;
+  }
+
+  .Button:hover::after {
+    visibility: visible;
+    transform: scale(30);
+  }
+  .Button:hover {
+    color: white;
+  }
+  .Button:hover i{
+    color: white;
 }

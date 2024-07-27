@@ -7,8 +7,8 @@ const client = new Client()
 
 const avatars = new Avatars(client);
 const databases = new Databases(client);
-const roles = new Teams(client);
 const storage = new Storage(client);
+const roles = new Teams(client);
 
 export const getUserData = async () => {
     try {
@@ -46,5 +46,4 @@ export const logout = async (email, password) => {
         }
     }
 }
-
-export { client, avatars, databases, roles, storage };
+export { client, avatars, databases, storage, roles };
