@@ -3,7 +3,7 @@
     --clr-primary: #00e069;
     --clr-yellow: #ffbb00;
     --clr-red: #ff3c00;
-    --clr-background: light-dark(#ffffff, #ff0000);
+    --clr-real-background: light-dark(#ffffff, #ff0000);
     --clr-foreground: light-dark(#F3F3F3, #242424);
     --clr-foreground-accent: light-dark(#dddddd, #303030);
     --clr-foreground-light: light-dark(#cfcfcf, #444444);
@@ -19,7 +19,7 @@ form {
 }
 
 .delete-modal {
-    background-color: var(--clr-background);
+    background-color: var(--clr-real-background);
     border: 1px solid var(--clr-foreground);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 10px;
@@ -37,7 +37,7 @@ form {
     cursor: pointer;
     padding: 10px 20px;
     border: 1px solid var(--clr-foreground);
-    background-color: var(--clr-background);
+    background-color: var(--clr-real-background);
     border-radius: 9999px;
     align-items: center;
     justify-content: center;
