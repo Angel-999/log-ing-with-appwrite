@@ -22,8 +22,7 @@ async function Initialize() {
     await getUserData()
     .then ((account) => setUserData(account))
     .catch((error) => {
-        window.alert("Login failed");
-         navigate('./login.html');
+        navigate('./login.html');
     });
     //add event listeners
     languageSelect.addEventListener("change", function () {

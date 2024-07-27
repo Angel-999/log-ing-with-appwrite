@@ -165,7 +165,7 @@ ul li i {
 }
 
 .sidebar {
-  background-color: var(--clr-background);
+  background-color: red;
   z-index: 2;
   width: 240px;
   -webkit-box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.1);
