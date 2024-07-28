@@ -14,7 +14,7 @@ body {
 }
 
 .top-bar {
-  background-color: var(--clr-real-background);
+  background-color: #303030;
   display: flex;
   justify-content: space-between;
   align-items: center;
