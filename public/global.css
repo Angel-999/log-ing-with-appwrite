@@ -1,9 +1,10 @@
+
 :root {
     color-scheme: light dark;
     --clr-primary: #00e069;
     --clr-yellow: #ffbb00;
     --clr-red: #ff3c00;
-    --clr-real-background: light-dark(#ffffff, #ff0000);
+    --clr-real-background: light-dark(#ffffff, #131313);
     --clr-foreground: light-dark(#F3F3F3, #242424);
     --clr-foreground-accent: light-dark(#dddddd, #303030);
     --clr-foreground-light: light-dark(#cfcfcf, #444444);
