@@ -14,7 +14,7 @@ body {
 }
 
 .top-bar {
-  background-color: #303030;
+  background-color: red;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -152,7 +152,7 @@ ul li i {
 }
 
 .sidebar {
-  background-color: var(--clr-real-background);
+  background-color: red;
   z-index: 2;
   width: 240px;
   -webkit-box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.1);
