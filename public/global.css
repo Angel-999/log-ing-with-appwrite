@@ -20,7 +20,7 @@ form {
 }
 
 .delete-modal {
-    background-color: var(--clr-real-background);
+    background-color: var(--clr-real-background, #131313);
     border: 1px solid var(--clr-foreground);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 10px;
