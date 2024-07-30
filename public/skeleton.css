@@ -1,17 +1,34 @@
-:root{
+:root {
     color-scheme: light dark;
     --clr-skeleton-main: light-dark(#dddddd, #303030);
-    --clr-skeleton-secondary: light-dark(#cccccc,#404040);
-  }
+    --clr-skeleton-secondary: light-dark(#cccccc, #404040);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --clr-skeleton-main: #303030;
+        --clr-skeleton-secondary: #404040;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --clr-skeleton-main: #dddddd;
+        --clr-skeleton-secondary: #cccccc;
+    }
+}
 
 
-.skeleton{
+.skeleton {
     position: relative;
 }
+
 .skeleton img {
-    display: none; /* Hide the image by default */
+    display: none;
+    /* Hide the image by default */
 }
-.skeleton::before{
+
+.skeleton::before {
     content: '';
     position: absolute;
     top: 0;
@@ -19,14 +36,16 @@
     width: var(--skeletonWidth, 100%);
     height: 100%;
     z-index: 1;
-    background:  linear-gradient(60deg, var(--clr-skeleton-secondary), var(--clr-skeleton-secondary), var(--clr-skeleton-main), var(--clr-skeleton-secondary), var(--clr-skeleton-secondary));
+    background: linear-gradient(60deg, var(--clr-skeleton-secondary), var(--clr-skeleton-secondary), var(--clr-skeleton-main), var(--clr-skeleton-secondary), var(--clr-skeleton-secondary));
     background-size: 300% 300%;
     animation: skeleton-loading 1.5s infinite linear;
 }
+
 @keyframes skeleton-loading {
     0% {
         background-position: -150% 0;
     }
+
     100% {
         background-position: 150% 0;
     }
