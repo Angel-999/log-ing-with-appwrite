@@ -17,12 +17,26 @@
 @media (prefers-color-scheme: dark) {
     :root {
         --background: #0f0f0f;
+        --foreground: #242424;
+        --foreground-accent: #303030;
+        --foreground-light: #444444;
+        --text: #ffffff;
+        --disabled-text: #707070;
+        --button-text: var(--primary);
+        --button-text-hover: #ffffff;
     }
 }
 
 @media (prefers-color-scheme: light) {
     :root {
         --background: #ffffff;
+        --foreground: #F3F3F3;
+        --foreground-accent: #dddddd;
+        --foreground-light: #cfcfcf;
+        --text: #000000;
+        --disabled-text: #606060;
+        --button-text: #000000;
+        --button-text-hover: #ffffff;
     }
 }
 
@@ -31,7 +45,7 @@ form {
 }
 
 .delete-modal {
-    background-color: var(--background, #0f0f0f);
+    background-color: var(--background);
     border: 1px solid var(--foreground);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 10px;
