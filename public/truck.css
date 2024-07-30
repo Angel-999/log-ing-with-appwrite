@@ -23,16 +23,13 @@ body {
   position: fixed;
   width: 100%;
   top: 0;
-  z-index: 2;
+  z-index: 10;
 }
 
 .left-section,
 .right-section {
   display: flex;
   align-items: center;
-}
-.right-section div{
-    margin-left: 5px;
 }
 .right-section .user-profile{
   margin-left: 10px;
@@ -451,14 +448,15 @@ dialog {
 }
 
 .tooltip {
+  margin-left: 5px;
   background-color: transparent;
-  z-index: 10;
+  z-index: 2;
   position: relative;
   display: inline-block;
   cursor: pointer;
   padding: 0; 
   border: 0;
-  border-radius: 50%;
+  border-radius: 999px;
   transition: .2s;
 }
 

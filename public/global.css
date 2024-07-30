@@ -102,3 +102,6 @@ form {
   .Button:hover i{
     color: white;
 }
+.user-profile img{
+    background-color: white;
+}
