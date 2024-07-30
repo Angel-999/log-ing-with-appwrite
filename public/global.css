@@ -1,5 +1,5 @@
 
-:root, :before, :after {
+:root {
     color-scheme: light dark;
     --primary: #00e069;
     --yellow: #ffbb00;
