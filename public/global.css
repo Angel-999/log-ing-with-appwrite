@@ -1,17 +1,17 @@
 
 :root {
     color-scheme: light dark;
-    --clr-primary: #00e069;
-    --clr-yellow: #ffbb00;
-    --clr-red: #ff3c00;
-    --clr-real-background: light-dark(#ffffff, #131313);
-    --clr-foreground: light-dark(#F3F3F3, #242424);
-    --clr-foreground-accent: light-dark(#dddddd, #303030);
-    --clr-foreground-light: light-dark(#cfcfcf, #444444);
-    --clr-text: light-dark(#000000, #ffffff);
-    --clr-disabled-text: light-dark(#606060, #707070);
-    --clr-button-text: light-dark(#000000, var(--clr-primary));
-    --clr-button-text-hover: light-dark(#ffffff, #ffffff);
+    --primary: #00e069;
+    --yellow: #ffbb00;
+    --red: #ff3c00;
+    --background: light-dark(#ffffff, #0f0f0f);
+    --foreground: light-dark(#F3F3F3, #242424);
+    --foreground-accent: light-dark(#dddddd, #303030);
+    --foreground-light: light-dark(#cfcfcf, #444444);
+    --text: light-dark(#000000, #ffffff);
+    --disabled-text: light-dark(#606060, #707070);
+    --button-text: light-dark(#000000, var(--primary));
+    --button-text-hover: light-dark(#ffffff, #ffffff);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -20,8 +20,8 @@ form {
 }
 
 .delete-modal {
-    background-color: var(--clr-real-background, #131313);
-    border: 1px solid var(--clr-foreground);
+    background-color: var(--background, #0f0f0f);
+    border: 1px solid var(--foreground);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 10px;
     padding: 20px;
@@ -37,8 +37,8 @@ form {
 .Button {
     cursor: pointer;
     padding: 10px 20px;
-    border: 1px solid var(--clr-foreground);
-    background-color: var(--clr-real-background);
+    border: 1px solid var(--foreground);
+    background-color: var(--background);
     border-radius: 9999px;
     align-items: center;
     justify-content: center;

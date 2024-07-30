@@ -4,17 +4,17 @@ button {
 
 a {
   text-decoration: none;
-  color: var(--clr-text);
+  color: var(--text);
 }
 
 body {
-  background-color: #303030;
+  background-color: var(--real-background, #0f0f0f);
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .top-bar {
-  background-color: red;
+  background-color: var(--background, #0f0f0f);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -43,7 +43,7 @@ body {
   pointer-events: none;
   font-size: 24px;
   font-weight: bold;
-  color: var(--clr-primary);
+  color: var(--primary);
 }
 
 .search-bar {
@@ -53,7 +53,7 @@ body {
   max-width: 600px; /* Optional: limits the width of the search bar */
   margin: 0 10px;
   width: 50%;
-  border: 1px solid var(--clr-foreground);
+  border: 1px solid var(--foreground);
   border-radius: 50px 50px 50px 50px;
 }
 
@@ -67,9 +67,9 @@ body {
 }
 
 .search-bar #search-btn {
-  background-color: var(--clr-foreground);
+  background-color: var(--foreground);
   border-radius: 0 50px 50px 0;
-  border: 1px solid var(--clr-foreground);
+  border: 1px solid var(--foreground);
   cursor: pointer;
 }
 
@@ -95,7 +95,7 @@ body {
   position: absolute;
   top: 40px;
   right: 0;
-  background-color: var(--clr-foreground);
+  background-color: var(--foreground);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
   overflow: hidden;
@@ -109,7 +109,7 @@ body {
 }
 
 .dropdown-menu ul>li:first-of-type {
-  border-bottom: 1px solid var(--clr-foreground-light);
+  border-bottom: 1px solid var(--foreground-light);
 }
 
 .dropdown-menu ul li {
@@ -129,7 +129,7 @@ ul li i {
 }
 
 .dropdown-menu ul li:hover {
-  background-color: var(--clr-foreground-accent);
+  background-color: var(--foreground-accent);
 }
 
 .theme-selector {
@@ -142,7 +142,7 @@ ul li i {
 .theme-selector option {
   border: none;
   outline: none;
-  background-color: var(--clr-foreground-accent);
+  background-color: var(--foreground-accent);
   cursor: pointer;
 }
 
@@ -152,7 +152,7 @@ ul li i {
 }
 
 .sidebar {
-  background-color: black;
+  background-color: var(--background, #0f0f0f);
   z-index: 2;
   width: 240px;
   -webkit-box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.1);
@@ -189,13 +189,13 @@ ul li i {
 
 .sidebar ul li:hover {
 
-  color: var(--clr-primary);
+  color: var(--primary);
   scale: 1.05;
 }
 
 .sidebar ul .active {
-  background-color: var(--clr-foreground);
-  color: var(--clr-primary);
+  background-color: var(--foreground);
+  color: var(--primary);
   font-weight: 500;
 }
 
@@ -246,13 +246,13 @@ ul li i {
   font-size: 16px;
   font-weight: bold;
   margin: 8px;
-  color: var(--clr-text);
+  color: var(--text);
 }
 
 /* Additional info (e.g., channel name, views) */
 .video-info {
   font-size: 14px;
-  color: var(--clr-disabled-text);
+  color: var(--disabled-text);
   margin: 0 8px 8px;
 }
 
@@ -264,7 +264,7 @@ dialog {
 }
 
 #login-modal::backdrop {
-  background-color: var(--clr-real-background);
+  background-color: var(--background, #0f0f0f);
 }
 
 
@@ -328,7 +328,7 @@ dialog {
   border-radius: 20px;
   border: 0 !important;
   outline: 0 !important;
-  background: var(--clr-primary);
+  background: var(--primary);
   color: white;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -420,7 +420,7 @@ dialog {
 .bars {
   width: 100%;
   height: 3px;
-  background-color: var(--clr-text, white);
+  background-color: green;
   border-radius: 2px;
 }
 
@@ -470,8 +470,8 @@ dialog {
 .tooltiptext {
   visibility: hidden;
   opacity: 0;
-  background-color: var(--clr-foreground);
-  color: var(--clr-text);
+  background-color: var(--foreground);
+  color: var(--text);
   text-align: center;
   border-radius: 5px;
   padding: 10px;
@@ -490,20 +490,20 @@ dialog {
   margin-left: -10px;
   border-width: 10px;
   border-style: solid;
-  border-color: transparent transparent var(--clr-foreground) transparent;
+  border-color: transparent transparent var(--foreground) transparent;
 }
 
 .tooltip .icon {
   display: inline-block;
   width: 20px;
   height: 20px;
-  color: var(--clr-text);
+  color: var(--text, white);
   text-align: center;
   line-height: 20px;
   padding: 9px;
 }
 .tooltip:hover {
-  background-color: var(--clr-foreground);
+  background-color: var(--foreground);
 }
 #loadingOverlay {
   z-index: 50;
@@ -529,7 +529,7 @@ dialog {
 }
 
 .spinner1 {
-  background-color: var(--clr-real-background);
+  background-color: var(--real-background);
   height: 100%; /* Adjust the height to 50% of the parent loader div */
   aspect-ratio: 1;
   border-radius: 100%;
@@ -561,7 +561,7 @@ dialog {
   border-radius: 20px;
   border: 0 !important;
   outline: 0 !important;
-  background: var(--clr-primary);
+  background: var(--primary);
   color: white;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
