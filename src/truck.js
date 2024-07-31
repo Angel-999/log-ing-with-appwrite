@@ -1,6 +1,7 @@
 import { getUserData, avatars, logout, roles, databases, storage } from './appwrite.js';
 import { getCurrentPage, userLang, loadLanguage } from './translate.js';
 import { ID, Query } from "appwrite";
+import { uploadImage } from './images.js';
 //References
 const languageSelect = document.getElementById("language-select");
 const logOutBtn = document.getElementById('logout-btn');
@@ -32,10 +33,10 @@ async function Initialize() {
     logOutBtn.addEventListener('click', logOut);
     menuIcon.addEventListener('click', handleSideBar);
     refreshBtn.addEventListener('click', checkForUpdates);
-    fileInput.addEventListener('change', convertImage);
     formAdd.addEventListener('submit', postTruck);
     searchBar.addEventListener('keyup', searchTrucksFromInput);
     searchBtn.addEventListener('click', searchTrucks);
+    fileInput.addEventListener('change', ImageChanged);
 }
 function handleSideBar() {
     sideBar.classList.toggle('active');
@@ -83,17 +84,11 @@ async function postTruck() {
     //showLoader();
     const input = document.getElementById('TruckNumberInputField');
     const truckNumber = input.value.trim();
-    const fileId = await uploadWebPImage(convertedBlob, truckNumber);
-    const fileURL = await storage.getFileView('669cbd410034f5902774', fileId);
+    const fileURL = await uploadImage(fileInput.files[0], truckNumber);
     console.log(fileURL);
     if (truckNumber == "") {
         //hideLoader();
         alert('Please enter a truck number.');
-        return;
-    }
-    if (!convertedBlob) {
-        //hideLoader();
-        alert('Please upload and convert an image first.');
         return;
     }
 
@@ -242,121 +237,11 @@ async function deleteTruck(truckId) {
 //#endregion
 //#endregion
 
-//#region Image conversion
-let convertedBlob = null;
 
-async function convertImage() {
-    //showLoader();
-    const fileInput = document.getElementById('fileInput');
-    const canvas = document.getElementById('canvas');
+function ImageChanged(){
     const uploadButton = document.getElementById('uploadButton').querySelector('span');
-
-    const file = fileInput.files[0];
-
-    if (!file) {
-        //hideLoader(); // Hide loader if no file is selected
-        alert('Image conversion complete.');
-        return;
-    }
-
-    uploadButton.textContent = file.name; // Update button text to show the file name
-    // Check if the file is already a WebP
-    if (file.type === 'image/webp') {
-        convertedBlob = file;
-        //hideLoader(); // Hide loader as no conversion is needed
-        alert('Image conversion complete.');
-        return;
-    }
-
-    try {
-        const imgSrc = await readFileAsDataURL(file);
-        const img = await loadImage(imgSrc);
-        const blob = await drawImageToCanvas(img, canvas);
-        convertedBlob = blob;
-    } catch (error) {
-        console.error('Error during image conversion:', error);
-    } finally {
-        //hideLoader(); // Hide loader after conversion or error
-        alert('Image conversion complete.');
-    }
+    uploadButton.textContent = fileInput.files[0].name; // Update button text to show the file name
 }
-function readFileAsDataURL(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-        reader.readAsDataURL(file);
-    });
-}
-
-function loadImage(src) {
-    return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = error => reject(error);
-        img.src = src;
-    });
-}
-
-function drawImageToCanvas(img, canvas) {
-    return new Promise((resolve) => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
-        canvas.toBlob(blob => resolve(blob), 'image/webp');
-    });
-}
-//#endregion
-
-//#region WebP image upload
-async function uploadWebPImage(blob, truckNumber) {
-    const filePath = `IMG_${truckNumber}.webp`;
-    let file = new File([blob], filePath, {
-        type: blob.type,
-        lastModified: Date.now()
-    });
-    const result = await storage.createFile(
-        '669cbd410034f5902774', // bucketId
-        ID.unique(), // fileId
-        file
-    );
-
-    return result.$id;
-    const apiURL = 'https://api.backendless.com/C7DCE9F8-9E7D-4D56-BFB5-A0315B70F95C/1324AB59-19C3-400A-A57F-48AADA065503/files/';
-    //const filePath = `trucks/IMG_${truckNumber}.webp`; // Use the truck number in the file name
-    const uploadURL = apiURL + filePath;
-
-    const formData = new FormData();
-    formData.append('file', blob, filePath);
-
-    try {
-        const response = await fetch(uploadURL, {
-            method: 'POST',
-            body: formData
-        });
-        const data = await response.json();
-        console.log('File uploaded successfully:', data);
-        return data.fileURL;
-    } catch (error) {
-        console.error('Error uploading file:', error);
-        alert('Failed to upload the WebP image.');
-        hideLoader();
-    }
-    return "";
-}
-//#endregion
-
-
-
-
-
-
-
-
-
-
-
 
 
 
