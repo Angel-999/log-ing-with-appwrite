@@ -2,7 +2,7 @@
 :root {
     color-scheme: light dark;
     --primary: #00e069;
-    --yellow: #ffbb00;
+    --yellow: #ffa31a;
     --red: #ff3c00;
     --background: light-dark(#ffffff, #0f0f0f);
     --foreground: light-dark(#F3F3F3, #242424);
@@ -105,3 +105,17 @@ form {
 .user-profile img{
     background-color: white;
 }
+
+
+.loader {
+    animation: spin 1s ease-out infinite;
+  }
+@keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    100% {
+      transform: rotate(360deg);
+    }
+  }

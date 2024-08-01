@@ -5,7 +5,8 @@
   },
   "dependencies": {
     "appwrite": "^14.0.1",
-    "imagekit-javascript": "^3.0.2"
+    "imagekit-javascript": "^3.0.2",
+    "notyf": "^3.10.0"
   },
   "devDependencies": {
     "webpack-cli": "^5.1.4"

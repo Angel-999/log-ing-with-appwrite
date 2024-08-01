@@ -2,7 +2,16 @@ import { getUserData, avatars, logout, roles, databases, storage } from './appwr
 import { getCurrentPage, userLang, loadLanguage } from './translate.js';
 import { ID, Query } from "appwrite";
 import { uploadImage } from './images.js';
+import { Notyf } from 'notyf';
+
 //References
+const notyf = new Notyf({
+    duration: 2500,
+    position: {
+        x: 'right',
+        y: 'bottom',
+    }
+});
 const languageSelect = document.getElementById("language-select");
 const logOutBtn = document.getElementById('logout-btn');
 const menuIcon = document.getElementById('checkbox');
@@ -19,12 +28,13 @@ window.addEventListener('load', () => {
     //console.log('Page fully loaded');
 });
 async function Initialize() {
+    notyf.loading('Loading trucks...');
     populateGrid();
     await getUserData()
-    .then ((account) => setUserData(account))
-    .catch((error) => {
-        navigate('./login.html');
-    });
+        .then((account) => setUserData(account))
+        .catch((error) => {
+            navigate('./login.html');
+        });
     //add event listeners
     languageSelect.addEventListener("change", function () {
         localStorage.setItem("userLang", languageSelect.value);
@@ -81,16 +91,15 @@ async function setUserData(account) {
 //#region Post
 async function postTruck() {
     event.preventDefault();
-    //showLoader();
     const input = document.getElementById('TruckNumberInputField');
     const truckNumber = input.value.trim();
-    const fileURL = await uploadImage(fileInput.files[0], truckNumber);
-    console.log(fileURL);
     if (truckNumber == "") {
         //hideLoader();
         alert('Please enter a truck number.');
         return;
     }
+    notyf.loading('Uploading truck...');
+    const fileURL = await uploadImage(fileInput.files[0], truckNumber);
 
     try {
         const result = await databases.createDocument(
@@ -102,12 +111,12 @@ async function postTruck() {
                 Picture: fileURL
             }
         );
+        notyf.dismissAll();
+        notyf.success("Truck #" + truckNumber + " uploaded successfully");
     } catch (error) {
-        console.error("Post trucks error:", error);
-        //hideLoader();
-
+        notyf.dismissAll();
+        notyf.error("Error uploading truck: " + error.message);
     }
-    location.reload();
 }
 //#endregion
 //#region Get
@@ -132,19 +141,19 @@ async function loadTrucks() {
             deleteModal.id = truck.$id;
             const deleteBtn = div.querySelector('[truck]');
             deleteBtn.setAttribute('popovertarget', truck.$id);
-            deleteBtn.setAttribute('truck', truck.$id); 
-            deleteBtn.addEventListener('click', function() {
+            deleteBtn.setAttribute('truck', truck.$id);
+            deleteBtn.addEventListener('click', function () {
                 event.preventDefault();
                 deleteModal.hidePopover();
                 // Get the updated value of the truck attribute
                 const truckId = this.getAttribute('truck');
-                
+
                 // Show an alert with the truck ID
                 deleteTruck(truckId);
             });
             const deleteOpenModal = div.querySelector('#delete-open-modal');
             deleteOpenModal.setAttribute('popovertarget', truck.$id);
-            deleteOpenModal.addEventListener('click', function() {
+            deleteOpenModal.addEventListener('click', function () {
                 event.preventDefault();
                 deleteModal.showPopover();
             })
@@ -157,8 +166,10 @@ async function loadTrucks() {
         allSkeleton.forEach(item => {
             item.classList.remove('skeleton');
         });
+        notyf.dismissAll();
+        notyf.success("Trucks loaded successfully");
     } catch (error) {
-        console.error('Error:', error);
+        notyf.error("Error loading trucks: " + error.message);
     }
 }
 
@@ -177,7 +188,7 @@ async function searchTrucks() {
         ]
     );
     const truckList = Object.values(trucksData.documents);
-    if(truckList.length == 0){
+    if (truckList.length == 0) {
         grid.innerHTML = '';
         const fileURL = await storage.getFileView('669cbd410034f5902774', "66a19b800001e760d48d");
         const div = cardTemplate.content.cloneNode(true);
@@ -216,7 +227,7 @@ async function searchTrucks() {
             item.classList.remove('skeleton');
         });
     } catch (error) {
-        console.error('Error:', error);
+        notyf.error("Error searching trucks: " + error.message);
     }
 }
 
@@ -238,7 +249,7 @@ async function deleteTruck(truckId) {
 //#endregion
 
 
-function ImageChanged(){
+function ImageChanged() {
     const uploadButton = document.getElementById('uploadButton').querySelector('span');
     uploadButton.textContent = fileInput.files[0].name; // Update button text to show the file name
 }
@@ -273,19 +284,22 @@ function populateGrid() {
 
 //#endregion
 const cooldownKey = 'lastApiCallTimestamp';
-const cooldownDuration = 1000; // 5 seconds = 5000 milliseconds(production),    60 seconds = 6000 milliseconds (development)    (Uses milliseconds)
+const cooldownDuration = 10000; // 10 seconds = 10000 milliseconds(production),    60 seconds = 60000 milliseconds (development)    (Uses milliseconds)
 async function checkForUpdates() {
     const lastApiCall = localStorage.getItem(cooldownKey);
     const now = new Date().getTime();
     // Check if cooldown period has passed
     if (lastApiCall && (now - lastApiCall < cooldownDuration)) {
+        notyf.error('Wait for ' + Math.ceil((cooldownDuration - (now - lastApiCall))/1000) + ' seconds before checking for updates again');
         return;
     }
     try {
+        notyf.loading('Loading trucks...');
         localStorage.setItem(cooldownKey, now); // Update the last API call timestamp
         loadTrucks();
     } catch (error) {
-        console.error('Error checking for updates:', error);
+        notyf.dismissAll();
+        notyf.error("Error refreshing trucks: " + error.message);
     }
 }
 
@@ -297,7 +311,7 @@ async function checkForUpdates() {
 
 async function logOut() {
     logout()
-    .then((account) => navigate('./login.html'));
+        .then((account) => navigate('./login.html'));
 }
 function navigate(url) {
     window.location.assign(url);
