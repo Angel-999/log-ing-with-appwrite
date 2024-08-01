@@ -4,6 +4,7 @@ module.exports = {
     truck: './src/truck.js',
     login: './src/login.js',
     translate: './src/translate.js',
+    view: './src/view.js',
     // Add more entries as needed
   },
   output: {

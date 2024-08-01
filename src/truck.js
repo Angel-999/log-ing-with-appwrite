@@ -95,12 +95,19 @@ async function postTruck() {
     const truckNumber = input.value.trim();
     if (truckNumber == "") {
         //hideLoader();
-        alert('Please enter a truck number.');
+        notyf.error('Please enter a Truck number');
         return;
     }
+    if (fileInput.files.length == 0) {
+        notyf.error('Please select a file to upload');
+        return;
+    }
+    const modal = document.querySelector("[add-modal]")
+    modal.close();
     notyf.loading('Uploading truck...');
+    const imageNotyf= notyf.loading('Uploading trrck image...');
     const fileURL = await uploadImage(fileInput.files[0], truckNumber);
-
+    notyf.dismiss(imageNotyf);
     try {
         const result = await databases.createDocument(
             'tst', // databaseId
@@ -112,7 +119,8 @@ async function postTruck() {
             }
         );
         notyf.dismissAll();
-        notyf.success("Truck #" + truckNumber + " uploaded successfully");
+        notyf.success("Truck " + truckNumber + " uploaded successfully");
+        SilentLoadTrucks();
     } catch (error) {
         notyf.dismissAll();
         notyf.error("Error uploading truck: " + error.message);
@@ -135,30 +143,11 @@ async function loadTrucks() {
             div.querySelector('[data-thumbnail]').src = truck.Picture;
             div.querySelector('[data-title]').textContent = truck.Number;
             //div.querySelector('[data-title]').setAttribute('truck', truck.$id);
-            div.querySelector('#message').textContent = "Are you sure you want to delete truck#" + truck.Number + "?";
-            div.querySelector('#delete-cancel-modal').setAttribute('popovertarget', truck.$id);
-            const deleteModal = div.querySelector('.delete-modal');
-            deleteModal.id = truck.$id;
-            const deleteBtn = div.querySelector('[truck]');
-            deleteBtn.setAttribute('popovertarget', truck.$id);
-            deleteBtn.setAttribute('truck', truck.$id);
-            deleteBtn.addEventListener('click', function () {
-                event.preventDefault();
-                deleteModal.hidePopover();
-                // Get the updated value of the truck attribute
-                const truckId = this.getAttribute('truck');
-
-                // Show an alert with the truck ID
-                deleteTruck(truckId);
-            });
             const deleteOpenModal = div.querySelector('#delete-open-modal');
-            deleteOpenModal.setAttribute('popovertarget', truck.$id);
             deleteOpenModal.addEventListener('click', function () {
                 event.preventDefault();
-                deleteModal.showPopover();
+                deleteTruck(truck.$id, truck.Number);
             })
-            //const info = translations[currentPage]['video_info'];
-            //div.querySelector('[data-info]').textContent = info;
             grid.appendChild(div);
         });
         loadLanguage();
@@ -168,6 +157,34 @@ async function loadTrucks() {
         });
         notyf.dismissAll();
         notyf.success("Trucks loaded successfully");
+    } catch (error) {
+        notyf.error("Error loading trucks: " + error.message);
+    }
+}
+async function SilentLoadTrucks() {
+    const trucksData = await databases.listDocuments('tst', '669cbcd30006ae923e3c');
+    const truckList = Object.values(trucksData.documents);
+    try {
+        grid.innerHTML = '';
+        const i = 1;
+        truckList.forEach(truck => {
+            const div = cardTemplate.content.cloneNode(true);
+            div.querySelector('[data-link]').href = "view.html?id=" + truck.$id;
+            div.querySelector('[data-thumbnail]').src = truck.Picture;
+            div.querySelector('[data-title]').textContent = truck.Number;
+            //div.querySelector('[data-title]').setAttribute('truck', truck.$id);
+            const deleteOpenModal = div.querySelector('#delete-open-modal');
+            deleteOpenModal.addEventListener('click', function () {
+                event.preventDefault();
+                deleteTruck(truck.$id, truck.Number);
+            })
+            grid.appendChild(div);
+        });
+        loadLanguage();
+        const allSkeleton = document.querySelectorAll('.skeleton');
+        allSkeleton.forEach(item => {
+            item.classList.remove('skeleton');
+        });
     } catch (error) {
         notyf.error("Error loading trucks: " + error.message);
     }
@@ -237,10 +254,16 @@ async function searchTrucks() {
 
 //#endregion
 //#region Delete
-async function deleteTruck(truckId) {
+async function deleteTruck(truckId, truckNumber) {
+    if (!confirm('Are you sure you want to delete Truck ' + truckNumber + '?')) {
+        return;
+    }
     try {
+        notyf.loading("Deleting truck...");
         await databases.deleteDocument('tst', '669cbcd30006ae923e3c', truckId);
-        loadTrucks();
+        notyf.dismissAll();
+        notyf.success("Truck deleted successfully");
+        SilentLoadTrucks();
     } catch (error) {
         console.error('Error:', error);
     }
@@ -290,7 +313,7 @@ async function checkForUpdates() {
     const now = new Date().getTime();
     // Check if cooldown period has passed
     if (lastApiCall && (now - lastApiCall < cooldownDuration)) {
-        notyf.error('Wait for ' + Math.ceil((cooldownDuration - (now - lastApiCall))/1000) + ' seconds before checking for updates again');
+        notyf.error('Wait for ' + Math.ceil((cooldownDuration - (now - lastApiCall)) / 1000) + ' seconds before checking for updates again');
         return;
     }
     try {

@@ -1,0 +1,43 @@
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--clr-background);
+}
+
+.picture {
+  border: solid var(--clr-background) 2.5px;
+  border-radius: 100%;
+  object-fit: cover;
+  height: 200px;
+  width: 200px;
+  grid-row: span 5;
+  box-shadow: 0 0 15px 2px rgba(0, 0, 0, 0.325)
+}
+
+.Header {
+  margin-left: 10%;
+  margin-top: 5em;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: repeat(5);
+  gap: 15px;
+}
+
+.form-container {
+  width: 350px;
+  height: 500px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 20px 30px;
+}
+
+.title {
+  text-align: center;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  margin: 10px 0 30px 0;
+  font-size: 28px;
+  font-weight: 800;
+}
