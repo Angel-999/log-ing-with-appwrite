@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "appwrite": "^14.0.1",
+    "gridjs": "^6.2.0",
     "imagekit-javascript": "^3.0.2",
     "notyf": "^3.10.0"
   },

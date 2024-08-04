@@ -25,6 +25,11 @@
         --button-text: var(--primary);
         --button-text-hover: #ffffff;
     }
+
+    body {
+        background-color: var(--background);
+        color: var(--text);
+    }
 }
 
 @media (prefers-color-scheme: light) {
@@ -37,6 +42,10 @@
         --disabled-text: #606060;
         --button-text: #000000;
         --button-text-hover: #ffffff;
+    }
+    body {
+        background-color: var(--background);
+        color: var(--text);
     }
 }
 
@@ -377,11 +386,12 @@ li>.line {
         background-color: transparent;
     }
 }
+
 #checkbox {
     display: none;
-  }
-  
-  .toggle {
+}
+
+.toggle {
     position: relative;
     width: 25px;
     height: 25px;
@@ -392,60 +402,60 @@ li>.line {
     justify-content: center;
     gap: 5px;
     transition-duration: .3s;
-  }
-  
-  .bars {
+}
+
+.bars {
     width: 100%;
     height: 3px;
     background-color: var(--text);
     border-radius: 2px;
-  }
-  
-  #bar2 {
+}
+
+#bar2 {
     transition-duration: .15s;
-  }
-  
-  #checkbox:checked+.toggle .bars {
+}
+
+#checkbox:checked+.toggle .bars {
     position: absolute;
-  }
-  
-  #checkbox:checked+.toggle #bar2 {
+}
+
+#checkbox:checked+.toggle #bar2 {
     transform: scaleX(0);
-  }
-  
-  #checkbox:checked+.toggle #bar1 {
+}
+
+#checkbox:checked+.toggle #bar1 {
     width: 100%;
     transform: rotate(45deg);
-  }
-  
-  #checkbox:checked+.toggle #bar3 {
+}
+
+#checkbox:checked+.toggle #bar3 {
     width: 100%;
     transform: rotate(-45deg);
-  }
-  
-  #checkbox:checked+.toggle {
+}
+
+#checkbox:checked+.toggle {
     transform: rotate(180deg);
-  }
-  
-  .tooltip {
+}
+
+.tooltip {
     margin-left: 5px;
     background-color: transparent;
     z-index: 2;
     position: relative;
     display: inline-block;
     cursor: pointer;
-    padding: 0; 
+    padding: 0;
     border: 0;
     border-radius: 999px;
     transition: .2s;
-  }
-  
-  .tooltip:hover .tooltiptext {
+}
+
+.tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
-  }
-  
-  .tooltiptext {
+}
+
+.tooltiptext {
     visibility: hidden;
     opacity: 0;
     background-color: var(--foreground);
@@ -458,9 +468,9 @@ li>.line {
     top: 115%;
     left: -50%;
     transition: opacity 0.3s;
-  }
-  
-  .tooltiptext::after {
+}
+
+.tooltiptext::after {
     content: "";
     position: absolute;
     top: -10px;
@@ -469,9 +479,9 @@ li>.line {
     border-width: 10px;
     border-style: solid;
     border-color: transparent transparent var(--foreground) transparent;
-  }
-  
-  .tooltip .icon {
+}
+
+.tooltip .icon {
     display: inline-block;
     width: 20px;
     height: 20px;
@@ -479,7 +489,8 @@ li>.line {
     text-align: center;
     line-height: 20px;
     padding: 9px;
-  }
-  .tooltip:hover {
+}
+
+.tooltip:hover {
     background-color: var(--foreground);
-  }
+}

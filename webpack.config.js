@@ -5,6 +5,7 @@ module.exports = {
     login: './src/login.js',
     translate: './src/translate.js',
     view: './src/view.js',
+    idk: './src/idk.js',
     // Add more entries as needed
   },
   output: {
