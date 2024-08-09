@@ -1,17 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ag-Grid Example</title>
 
-    <link rel="stylesheet" href="global.css">
-    <link rel="stylesheet" href="ag-grid-theme-builder.css">
-    <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ag-Grid Document Display Example</title>
+  <link rel="stylesheet" href="ag-grid-theme-builder.css">
+  <link rel="stylesheet" href="global.css">
+  <link rel="stylesheet" href="idk.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+  <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.noStyle.js"></script>
+  <script src="https://kit.fontawesome.com/a2b6c08f57.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
-  <button class="Button">Mark as paid</button>
-    <div id="myGrid" class="ag-theme-alpine" style="height: 500px; width: 100%;"></div>
-    <script src="../dist/idk.bundle.js"></script>
+  <!-- Modal Structure -->
+
+
+  <button id="editButton" class="Button" style="--clr: var(--yellow);"><i class="fa-solid fa-pen"></i>Edit</button>
+  <button class="Button" style="--clr: var(--primary);"><i class="fa-solid fa-plus"></i>Create</button>
+  <button class="Button" style="--clr: var(--red);"><i class="fa-solid fa-trash"></i>Delete</button>
+
+  <div id="myGrid" class="ag-theme-alpine" style="height: 500px; width: 100%;"></div>
+  <dialog id="editModal">
+    <form id="editForm" method="dialog">
+        <h4 id="modalTitle">Edit Inspection</h4>
+        <div class="input-field">
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date">
+        </div>
+        <div class="input-field">
+            <label for="note">Note:</label>
+            <input type="text" id="note" name="note">
+        </div>
+        <div class="input-field">
+            <label for="document">Document URL:</label>
+            <input type="text" id="document" name="document">
+        </div>
+        <button type="submit" id="saveButton" class="btn">Save</button>
+        <button type="button" id="closeButton" class="btn">Close</button>
+    </form>
+</dialog>
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+  <script src="../dist/idk.bundle.js"></script>
 </body>
+
 </html>

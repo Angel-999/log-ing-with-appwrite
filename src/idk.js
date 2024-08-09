@@ -1,66 +1,129 @@
-// JSON data
-const data = {
-    "total": 3,
-    "documents": [
-        {
-            "Date": "2024-08-02T11:32:00.229+00:00",
-            "Documents": [
-                "https://ik.imagekit.io/7lvwoay0t/documents/W9",
-                "https://ik.imagekit.io/7lvwoay0t/documents/W9",
-                "https://ik.imagekit.io/7lvwoay0t/documents/W9"
-            ],
-            "RepairsPrice": 100,
-            "Note": "Simple repair"
-        },
-        {
-            "Date": "2024-07-02T13:29:28.274+00:00",
-            "Documents": [
-                "https://ik.imagekit.io/7lvwoay0t/documents/W9",
-                "https://ik.imagekit.io/7lvwoay0t/documents/W9"
-            ],
-            "RepairsPrice": 599,
-            "Note": "More expensive repair"
-        },
-        {
-            "Date": "2024-08-02T13:29:28.274+00:00",
-            "Documents": [
-                "https://ik.imagekit.io/7lvwoay0t/documents/W9"
-            ],
-            "RepairsPrice": 69,
-            "Note": "More affordable repair"
-        }
-    ]
-};
-// Helper function to format date
-const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-};
-// Column definitions
-const columnDefs = [
-    { headerCheckboxSelection: true, checkboxSelection: true, suppressMovable: true, width: 40},
-    { headerName: "Date", field: "Date", cellDataType: 'date', suppressMovable: true, filter: 'agDateColumnFilter', editable: true, cellRenderer: (params) => formatDate(params.value) },
-    { headerName: "Repairs Price", field: "RepairsPrice", suppressMovable: true, filter: true, editable: true},
-    { headerName: "Note", field: "Note" , suppressMovable: true, filter: true, editable: true},
-    { headerName: "Documents", field: "Documents", suppressMovable: true, filter: true, cellRenderer: (params) => {
-        return params.value.map(doc => `<a href="${doc}" target="_blank">${doc.replace("https://ik.imagekit.io/7lvwoay0t/documents/", "")}</a>`).join(', ');
-    }}
-];
-
-// Grid options
-const gridOptions = {
-    columnDefs: columnDefs,
-    rowData: data.documents,
-    rowSelection: 'multiple',
-    suppressDragLeaveHidesColumns: true,
-    editType: 'fullRow'
-};
-
-// Setup the grid after the page has finished loading
-document.addEventListener('DOMContentLoaded', () => {
-    const gridDiv = document.querySelector('#myGrid');
-    new agGrid.Grid(gridDiv, gridOptions);
+import { getUserData, avatars, logout, roles, databases, storage } from './appwrite.js';
+import { Notyf } from 'notyf';
+const notyf = new Notyf({
+    duration: 2500,
+    position: {
+        x: 'right',
+        y: 'bottom',
+    }
 });
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get('id'); // Ensure URL has ?id=(ID)
+var globalGridOptions = {
+    
+}
+const editModal = document.getElementById('editModal');
+const modalTitle = document.getElementById('modalTitle');
+const dateInput = document.getElementById('date');
+const noteInput = document.getElementById('note');
+const documentInput = document.getElementById('document');
+const saveButton = document.getElementById('saveButton');
+const closeButton = document.getElementById('closeButton');
+const editForm = document.getElementById('editForm');
+document.addEventListener('DOMContentLoaded', () => {
+    Initialize();
+    const editButton = document.getElementById('editButton');
+    editButton.addEventListener('click', openEditModal);
+})
+async function Initialize() {
+    const data = await getInspections();
+    await renderGrid(data);
+    
+}
+function renderGrid(data) {
+    const columnDefs = [
+        { headerCheckboxSelection: true, checkboxSelection: true, suppressMovable: true, width: 40 },
+        { 
+            headerName: "Date", 
+            field: "Date", 
+            suppressMovable: true,
+            sortable: true, 
+            filter: 'agDateColumnFilter', 
+            valueFormatter: dateFormatter,
+            filterParams: {
+                comparator: function (filterLocalDateAtMidnight, cellValue) {
+                    // Parse the cell value to remove the time part
+                    const cellDate = new Date(cellValue);
+                    const cellDateWithoutTime = new Date(cellDate.getFullYear(), cellDate.getMonth(), cellDate.getDate());
+                    
+                    // Compare only the date part
+                    if (filterLocalDateAtMidnight.getTime() === cellDateWithoutTime.getTime()) {
+                        return 0;
+                    }
+                    if (cellDateWithoutTime < filterLocalDateAtMidnight) {
+                        return -1;
+                    }
+                    if (cellDateWithoutTime > filterLocalDateAtMidnight) {
+                        return 1;
+                    }
+                }
+            }
+        },
+        { headerName: "Note", field: "Note", sortable: false, filter: true, suppressMovable: true, },
+        {
+            headerName: "Document",
+            field: "Document",
+            sortable: false,
+            suppressMovable: true,
+            cellRenderer: function (params) {
+                if (params.value) {
+                    return `<a href="${params.value}" target="_blank" style="color: var(--primary); text-decoration: underline; padding: 5px 20px;"><i class="fa-solid fa-eye" style="margin-right: 10px;"></i>View</a>`;
+                } else {
+                    return "No Document";
+                }
+            }
+        }
+    ];
+    const gridOptions = {
+        columnDefs: columnDefs,
+        rowData: data,
+        rowSelection: 'multiple',
+        suppressDragLeaveHidesColumns: true,
+        editType: 'fullRow'
+    };
+    globalGridOptions = gridOptions;
+    const eGridDiv = document.querySelector('#myGrid');
+    new agGrid.Grid(eGridDiv, gridOptions);
+}
+function dateFormatter(params) {
+    if (params.value) {
+        const date = new Date(params.value);
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return date.toLocaleDateString(undefined, options); // Use abbreviated month
+    }
+    return null;
+}
+async function getInspections() {
+    // Function to fetch inspections by truck ID
+    if (!id) {
+        notyf.error("No ID provided");
+        return null;
+    }
+    try {
+        const response = await databases.getDocument(
+            'tst', // databaseId
+            '669cbcd30006ae923e3c', // collectionId
+            id  // documentId
+        );
+        return response.inspection;
+        
+    } catch (error) {
+        notyf.error("Error loading inspections: " + error.message);
+    }
+}
+function openEditModal(){
+    const selectedRows = globalGridOptions.api.getSelectedRows();
+        
+    if (selectedRows.length === 0) {
+        notyf.error('Please select a row to edit.');
+        return;
+    }
+
+    const row = selectedRows[0];
+    modalTitle.textContent = "Edit Inspection";
+    dateInput.value = row.Date.split('T')[0]; // Assuming the Date field is in ISO format
+    noteInput.value = row.Note || '';
+    documentInput.value = row.Document || '';
+    
+    editModal.showModal();
+}

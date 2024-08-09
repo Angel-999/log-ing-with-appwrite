@@ -14,7 +14,8 @@ if (id) {
     const img = document.getElementById('image');
     const tn = document.getElementById('TruckNumber');
     img.src = data.Picture; // Use the Picture URL from the response
-    tn.textContent = "Truck Number: " +data.Number;
+    document.title = "TST Board - Truck " + data.Number;
+    tn.textContent = "Truck Number: " + data.Number;
     g_truckNumber = data.Number;
     const allSkeleton = document.querySelectorAll('.skeleton');
     allSkeleton.forEach(item => {

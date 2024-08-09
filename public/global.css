@@ -53,7 +53,9 @@ a {
     text-decoration: none;
     color: var(--text);
 }
-
+.my-ass{
+    color: red;
+}
 form {
     cursor: auto;
 }
@@ -61,7 +63,7 @@ form {
 .Button {
     cursor: pointer;
     padding: 10px 20px;
-    border: 1px solid var(--foreground);
+    border: 1px solid var(--clr);
     background-color: var(--background);
     border-radius: 9999px;
     align-items: center;
@@ -77,31 +79,12 @@ form {
     margin-right: 10px;
     transition: 0.3s;
 }
-
-.Button::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    transition: 0.3s;
-    background-color: var(--clr);
-    border-radius: 30px;
-    height: 10px;
-    width: 10px;
-    z-index: -1;
-}
-
-.Button:hover::after {
-    visibility: visible;
-    transform: scale(30);
-}
-
 .Button:hover {
-    color: white;
+    background-color: var(--clr);
+    color: var(--text);
 }
-
 .Button:hover i {
-    color: white;
+    color: var(--text);
 }
 
 .user-profile img {
